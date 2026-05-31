@@ -31,5 +31,10 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: 'red',
   },
+  noTodo: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+  noTodoTitle: {
+    fontSize: 20,
+    fontWeight: '400',
+  },
 });
 export default styles;

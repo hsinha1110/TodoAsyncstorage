@@ -18,6 +18,7 @@ const Todo: FC = () => {
   const navigation = useNavigation<TodoScreenNavigationProp>();
   const [todos, setTodos] = useState<TodoItem[]>([]);
 
+  // Get Todo
   const getTodos = async () => {
     try {
       const data = await AsyncStorage.getItem('todos');
@@ -29,7 +30,12 @@ const Todo: FC = () => {
       console.log(error);
     }
   };
-
+  useFocusEffect(
+    useCallback(() => {
+      getTodos();
+    }, []),
+  );
+  // Delete Todo
   const deleteTodo = async (id: string) => {
     try {
       const updatedTodos = todos.filter(item => item.id !== id);
@@ -39,30 +45,32 @@ const Todo: FC = () => {
       console.log(error);
     }
   };
-  useFocusEffect(
-    useCallback(() => {
-      getTodos();
-    }, []),
-  );
+
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={todos}
-        keyExtractor={item => item.id}
-        contentContainerStyle={styles.listContainer}
-        renderItem={({ item }) => (
-          <View>
-            <View style={styles.todoItem}>
-              <Text>{item?.title}</Text>
-              <Button
-                title="Delete"
-                onPress={() => deleteTodo(item.id)}
-                style={styles.deleteButton}
-              />
+      {todos.length > 0 ? (
+        <FlatList
+          data={todos}
+          keyExtractor={item => item.id}
+          contentContainerStyle={styles.listContainer}
+          renderItem={({ item }) => (
+            <View>
+              <View style={styles.todoItem}>
+                <Text>{item?.title}</Text>
+                <Button
+                  title="Delete"
+                  onPress={() => deleteTodo(item.id)}
+                  style={styles.deleteButton}
+                />
+              </View>
             </View>
-          </View>
-        )}
-      />
+          )}
+        />
+      ) : (
+        <View style={styles.noTodo}>
+          <Text style={styles.noTodoTitle}>No to do found</Text>
+        </View>
+      )}
 
       <View style={styles.buttonContainer}>
         <Button

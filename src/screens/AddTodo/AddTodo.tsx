@@ -14,9 +14,10 @@ const AddTodo: FC = () => {
   const [toDo, setToDo] = useState('');
   const navigation = useNavigation<TodoScreenNavigationProp>();
 
+  // Add Todo
   const addTodo = async () => {
     if (!toDo.trim()) {
-      Alert.alert('Please add todo');
+      Alert.alert('Please enter todo');
       return;
     }
     try {
@@ -30,7 +31,6 @@ const AddTodo: FC = () => {
       await AsyncStorage.setItem('todos', JSON.stringify(todos));
       setToDo('');
       navigation.goBack();
-      console.log('Todo Saved');
     } catch (error) {
       console.log(error);
     }
